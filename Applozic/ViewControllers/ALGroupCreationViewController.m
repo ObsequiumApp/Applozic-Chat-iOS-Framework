@@ -30,6 +30,7 @@
 #import "UIImageView+WebCache.h"
 #import "ALContactService.h"
 #import "ALVOIPNotificationHandler.h"
+#import "ALObseObject.h"
 
 @interface ALGroupCreationViewController ()
 
