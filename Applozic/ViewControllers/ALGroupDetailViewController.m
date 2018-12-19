@@ -19,6 +19,7 @@
 #import "ALPushAssist.h"
 #import "ALChannelUser.h"
 #import "ALMessageClientService.h"
+#import "ALObseObject.h"
 
 @interface ALGroupDetailViewController () <ALGroupInfoDelegate>
 {
@@ -449,6 +450,16 @@
                             
                             if(!error)
                             {
+                                
+                                NSString *applozicGroupId = [self.channelKeyID stringValue];
+                                
+                                [ALObseObject deleteGroupMember:[[NSUserDefaults standardUserDefaults] objectForKey:@"uname"] groupUniqueId:applozicGroupId deviceId:[[NSUserDefaults standardUserDefaults] objectForKey:@"deviceid"] success:^(NSDictionary *oneObj) {
+                                    NSLog(@"deletion successful:");
+                                } failure:^(NSString *error) {
+                                    NSLog(@"deletion failed:");
+                                }];
+                                
+                                
                                 NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
                                 for (UIViewController *viewController in allViewControllers)
                                 {
@@ -574,33 +585,33 @@
     
             ALChannel *channel = [channelDBService loadChannelByKey:self.channelKeyID];
 
-            if(!alChannelUserX.isAdminUser  && !channel.isBroadcastGroup){
-            
-            [theController addAction:[UIAlertAction actionWithTitle:[NSString stringWithFormat:[NSLocalizedStringWithDefaultValue(@"makeAdminText", [ALApplozicSettings getLocalizableName], [NSBundle mainBundle], @"Make admin", @"") stringByAppendingString: @" %@"]
-                                                                     , memberNames[row]]
-                                                              style:UIAlertActionStyleDefault
-                                                            handler:^(UIAlertAction *action) {
-                                                                
-                                                                ALChannelService *channelService = [ALChannelService new];
-                                                                ALChannelUser * alChannelUsers = [ALChannelUser new];
-                                                                alChannelUsers.role = [NSNumber numberWithInt:1];
-                                                                alChannelUsers.userId = self->memberIds[row];
-                                                                NSMutableArray * channelUsers = [NSMutableArray new];
-                                                                [channelUsers addObject:alChannelUsers.dictionary];
-                                                                
-                                                                [channelService updateChannel:self.channelKeyID andNewName:nil
-                                                                                  andImageURL:nil orClientChannelKey:nil isUpdatingMetaData:NO metadata:nil orChildKeys:nil orChannelUsers: channelUsers withCompletion:^(NSError *error) {
-                                                                                      
-                                                                                      if(!error)
-                                                                                      {
-                                                                                          
-                                                                                          [ALUtilityClass showAlertMessage: NSLocalizedStringWithDefaultValue(@"groupSuccessFullyUpdateInfo", [ALApplozicSettings getLocalizableName], [NSBundle mainBundle], @"Group information successfully updated", @"") andTitle:NSLocalizedStringWithDefaultValue(@"responseText", [ALApplozicSettings getLocalizableName], [NSBundle mainBundle], @"Reponse", @"")];
-                                                                                          [self setupView];
-                                                                                          [self.tableView reloadData];
-                                                                                      }
-                                                                                  }];
-                                                            }]];
-        }
+//            if(!alChannelUserX.isAdminUser  && !channel.isBroadcastGroup){
+//
+//            [theController addAction:[UIAlertAction actionWithTitle:[NSString stringWithFormat:[NSLocalizedStringWithDefaultValue(@"makeAdminText", [ALApplozicSettings getLocalizableName], [NSBundle mainBundle], @"Make admin", @"") stringByAppendingString: @" %@"]
+//                                                                     , memberNames[row]]
+//                                                              style:UIAlertActionStyleDefault
+//                                                            handler:^(UIAlertAction *action) {
+//
+//                                                                ALChannelService *channelService = [ALChannelService new];
+//                                                                ALChannelUser * alChannelUsers = [ALChannelUser new];
+//                                                                alChannelUsers.role = [NSNumber numberWithInt:1];
+//                                                                alChannelUsers.userId = self->memberIds[row];
+//                                                                NSMutableArray * channelUsers = [NSMutableArray new];
+//                                                                [channelUsers addObject:alChannelUsers.dictionary];
+//
+//                                                                [channelService updateChannel:self.channelKeyID andNewName:nil
+//                                                                                  andImageURL:nil orClientChannelKey:nil isUpdatingMetaData:NO metadata:nil orChildKeys:nil orChannelUsers: channelUsers withCompletion:^(NSError *error) {
+//
+//                                                                                      if(!error)
+//                                                                                      {
+//
+//                                                                                          [ALUtilityClass showAlertMessage: NSLocalizedStringWithDefaultValue(@"groupSuccessFullyUpdateInfo", [ALApplozicSettings getLocalizableName], [NSBundle mainBundle], @"Group information successfully updated", @"") andTitle:NSLocalizedStringWithDefaultValue(@"responseText", [ALApplozicSettings getLocalizableName], [NSBundle mainBundle], @"Reponse", @"")];
+//                                                                                          [self setupView];
+//                                                                                          [self.tableView reloadData];
+//                                                                                      }
+//                                                                                  }];
+//                                                            }]];
+//        }
         
         
         
@@ -828,7 +839,8 @@
     else if(section == 1)
     {
         UILabel * memberSectionHeaderTitle = [[UILabel alloc] init];
-        memberSectionHeaderTitle.text = NSLocalizedStringWithDefaultValue(@"groupDetailsTitle", [ALApplozicSettings getLocalizableName], [NSBundle mainBundle], @"Group Details", @"");
+        memberSectionHeaderTitle.text = NSLocalizedStringWithDefaultValue(@"groupDetailsSectionTitle", [ALApplozicSettings getLocalizableName], [NSBundle mainBundle], @"Participant List", @"");
+    //    memberSectionHeaderTitle.text = NSLocalizedStringWithDefaultValue(@"groupDetailsTitle", [ALApplozicSettings getLocalizableName], [NSBundle mainBundle], @"Participant List", @"");
         
         CGSize textSize = [memberSectionHeaderTitle.text sizeWithAttributes:@{NSFontAttributeName:memberSectionHeaderTitle.font}];
         

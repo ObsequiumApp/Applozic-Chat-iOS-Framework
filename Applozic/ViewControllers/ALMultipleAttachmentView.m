@@ -263,6 +263,16 @@ static NSString * const reuseIdentifier = @"collectionCell";
         [ALUtilityClass showAlertMessage: NSLocalizedStringWithDefaultValue(@"selectAtleastAttachment", [ALApplozicSettings getLocalizableName], [NSBundle mainBundle], @"Select at least one attachment" , @"")andTitle: NSLocalizedStringWithDefaultValue(@"attachment", [ALApplozicSettings getLocalizableName], [NSBundle mainBundle], @"Attachment" , @"")];
         return;
     }
+    
+    NSString *prefix = @"";
+    NSString *colon = @":";
+    prefix = headerView.msgTextField.text;
+    NSString *stringToappend = [[NSUserDefaults standardUserDefaults] objectForKey:@"shortName"];
+    
+    prefix = [colon stringByAppendingString:prefix];
+    prefix = [stringToappend stringByAppendingString:prefix];
+    headerView.msgTextField.text = prefix;
+    
     [self.multipleAttachmentDelegate multipleAttachmentProcess:self.mediaFileArray andText:headerView.msgTextField.text];
     [self.navigationController popViewControllerAnimated:YES];
 }

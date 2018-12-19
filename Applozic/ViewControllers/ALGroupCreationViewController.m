@@ -42,6 +42,7 @@
 @implementation ALGroupCreationViewController
 {
     UIBarButtonItem *nextContacts;
+    UIBarButtonItem *backButton;
 }
 
 - (void)viewDidLoad
@@ -53,6 +54,9 @@
     [nextContacts setTarget:self];
 
     self.navigationItem.rightBarButtonItem = nextContacts;
+    
+    backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"obse-back-arrow"] style:UIBarButtonItemStylePlain target:self action:@selector(onClickBack)];
+    self.navigationItem.leftBarButtonItem = backButton;
     
     if ([UIApplication sharedApplication].userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft) {
         self.groupNameInput.textAlignment = NSTextAlignmentRight;
@@ -96,7 +100,30 @@
     self.descriptionTextView.hidden = NO;
     self.descriptionTextView.userInteractionEnabled = NO;
     [self.tabBarController.tabBar setHidden:YES];
+    if([ALApplozicSettings getColorForNavigation] && [ALApplozicSettings getColorForNavigationItem])
+    {
+        //        self.navigationController.navigationBar.translucent = NO;
+        [self.navigationController.navigationBar setTitleTextAttributes: @{
+                                                                           NSForegroundColorAttributeName:[ALApplozicSettings getColorForNavigationItem],
+                                                                           NSFontAttributeName:[UIFont fontWithName:[ALApplozicSettings getFontFace]
+                                                                                                               size:18]
+                                                                           }];
+        
+        [self.navigationController.navigationBar addSubview:[ALUtilityClass setStatusBarStyle]];
+        [self.navigationController.navigationBar setBarTintColor: [ALApplozicSettings getColorForNavigation]];
+        [self.navigationController.navigationBar setTintColor: [ALApplozicSettings getColorForNavigationItem]];
+        
+    }
     // self.alNewContactViewController.delegateGroupCreation = self;
+}
+
+
+- (void)onClickBack {
+    if (_fromEmail) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 -(void)setProfileImage
@@ -150,6 +177,8 @@
                                                          bundle:[NSBundle bundleForClass:ALGroupCreationViewController.class]];
     ALNewContactsViewController *contactsVC = [storyboard instantiateViewControllerWithIdentifier:@"ALNewContactsViewController"];
     
+    
+    contactsVC.fromEmail = _fromEmail;
     //Setting groupName and forGroup flag
     contactsVC.forGroup = [NSNumber numberWithInt:GROUP_CREATION];
     contactsVC.groupName = self.groupNameInput.text;
@@ -164,6 +193,7 @@
     }
     
     //Moving to contacts view for group member selection
+    [[NSUserDefaults standardUserDefaults] setObject:@"createGroup" forKey:@"createGroup"];
     [self.navigationController pushViewController:contactsVC animated:YES];
 }
 
@@ -200,6 +230,15 @@
         
           if(!error)
           {
+              
+              
+              NSString *grupIdInString = [self.channelKey stringValue];
+              
+              [ALObseObject updateGroup:[[NSUserDefaults standardUserDefaults] objectForKey:@"uname"] groupId:grupIdInString groupName:self.groupNameInput.text deviceId:[[NSUserDefaults standardUserDefaults] objectForKey:@"deviceid"] success:^(NSDictionary *oneObj) {
+                  NSLog(@"Successfully updated group");
+              } failure:^(NSString *error) {
+                  NSLog(@"Failed to update group");
+              }];
         
               ALSLog(ALLoggerSeverityInfo, @"ALGroupCreationViewController updated the group info");
               [self.navigationController popViewControllerAnimated:YES];

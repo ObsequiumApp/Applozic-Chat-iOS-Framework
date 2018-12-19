@@ -470,16 +470,57 @@ static CGFloat const sendTextViewCornerRadius = 15.0f;
 
 - (IBAction)sendAction:(id)sender
 {
+    /***********/
+    
     NSCharacterSet *charsToTrim = [NSCharacterSet characterSetWithCharactersInString:@"  \n\""];
-    self.sendMessageTextView.text = [self.sendMessageTextView.text stringByTrimmingCharactersInSet:charsToTrim];
-  
+    NSString *prefix = @"";
+    NSString *colon = @":";
+    prefix = self.sendMessageTextView.text;
+    NSString *stringToappend = [[NSUserDefaults standardUserDefaults] objectForKey:@"shortName"];
+    
+    prefix = [colon stringByAppendingString:prefix];
+    prefix = [stringToappend stringByAppendingString:prefix];
+    NSMutableAttributedString *hogan = [[NSMutableAttributedString alloc] initWithString:prefix];
+    [hogan addAttribute:NSFontAttributeName
+                  value:[UIFont systemFontOfSize:20.0]
+                  range:NSMakeRange(0, prefix.length)];
+    
+    
+    self.sendMessageTextView.attributedText = hogan;
+    NSLog(@"Hogan%@",hogan);
+    
     if(self.sendMessageTextView.text.length > 0)
     {
-        [self postMessage];
+        
+        
+        NSString *code = [self.sendMessageTextView.text substringFromIndex: [self.sendMessageTextView.text length] - 1];
+        if([code isEqualToString:@":"] || [self.sendMessageTextView.text rangeOfString:@"Write a Message..."].location != NSNotFound) {
+            [self.sendButton setUserInteractionEnabled:NO];
+            self.sendMessageTextView.text =@"";
+        } else {
+            [self postMessage];
+        }
+        
     }
     
+    [self.sendButton setUserInteractionEnabled:YES];
     [self.view layoutIfNeeded];
     [self setHeightOfTextViewDynamically];
+    
+    /************/
+    
+    
+    
+//    NSCharacterSet *charsToTrim = [NSCharacterSet characterSetWithCharactersInString:@"  \n\""];
+//    self.sendMessageTextView.text = [self.sendMessageTextView.text stringByTrimmingCharactersInSet:charsToTrim];
+//
+//    if(self.sendMessageTextView.text.length > 0)
+//    {
+//        [self postMessage];
+//    }
+//
+//    [self.view layoutIfNeeded];
+//    [self setHeightOfTextViewDynamically];
 }
 
 - (IBAction)attachmentActionMethod:(id)sender {

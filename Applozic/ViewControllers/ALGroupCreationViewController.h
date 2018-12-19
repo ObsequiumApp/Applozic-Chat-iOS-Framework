@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *mTableView;
 @property (strong,nonatomic) NSString * groupImageUploadURL;
 @property (nonatomic,strong) NSString * groupImageURL;
+@property (nonatomic) BOOL fromEmail;
 
 /**************************************
  CASE IF UPDATING GROUP INFORMATION

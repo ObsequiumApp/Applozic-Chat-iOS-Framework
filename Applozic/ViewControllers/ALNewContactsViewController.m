@@ -30,6 +30,7 @@
 #import "ALSubViewController.h"
 #import "ALApplozicSettings.h"
 #import "ALMessageClientService.h"
+#import "ALObseObject.h"
 
 #define DEFAULT_TOP_LANDSCAPE_CONSTANT -34
 #define DEFAULT_TOP_PORTRAIT_CONSTANT -64
@@ -62,12 +63,14 @@
 @implementation ALNewContactsViewController
 {
     UIBarButtonItem *barButtonItem;
+    NSMutableArray *contactsArray;
 }
 @synthesize delegate;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    contactsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"contactListArray"];
     [[self activityIndicator] startAnimating];
     self.selectedSegment = 0;
     [ALUserDefaultsHandler setContactServerCallIsDone:NO];
@@ -308,6 +311,7 @@
 
 - (void)updateView
 {
+    contactsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"contactListArray"];
     [self.tabBarController.tabBar setHidden:YES];
     [self.segmentControl setSelectedSegmentIndex:0];
     [self.segmentControl setHidden:YES];
@@ -402,19 +406,31 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSUInteger count = self.filteredContactList.count;
-    if(self.selectedSegment == 1)
-    {
+    
+    NSUInteger count = 0;
+    if(self.selectedSegment == 0) {
+        count = contactsArray.count;
+    } else if(self.selectedSegment == 1) {
         count = self.filteredContactList.count;
     }
-    if(count == 0)
-    {
-        if(![self.activityIndicator isAnimating]){
-            [self.emptyConversationText setHidden:NO];
-            [self setTextForEmpty];
-        }
-    }
+    
     return count;
+    
+    
+//    NSUInteger count = self.filteredContactList.count;
+//    if(self.selectedSegment == 1)
+//    {
+//        count = self.filteredContactList.count;
+//    }
+//    if(count == 0)
+//    {
+//        if(![self.activityIndicator isAnimating]){
+//            [self.emptyConversationText setHidden:NO];
+//            [self setTextForEmpty];
+//        }
+//    }
+//    return count;
+    
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -443,8 +459,23 @@
         {
             case SHOW_CONTACTS:
             {
-                ALContact *contact = (ALContact *)[self.filteredContactList objectAtIndex:indexPath.row];
+                for(int i=0 ; i<=[self.filteredContactList count] - 1 ; i++) {
+                    ALContact *contact = (ALContact *)[self.filteredContactList objectAtIndex:i];
+                    for(int j=0 ; j<=[contactsArray count] - 1 ; j++) {
+                        NSString *dispName =  [contactsArray[j] objectForKey:@"userId"];
+                        if ([dispName isEqualToString:contact.userId]) {
+                            [self.tempArrayForFilter addObject:contact];
+                            NSLog(@"url for image:%@",contact.contactImageUrl);
+                        }
+                    }
+                    
+                }
+                
+                ALContact *contact = (ALContact *)[self.tempArrayForFilter objectAtIndex:indexPath.row];
                 newContactCell.contactPersonName.text = [contact getDisplayName];
+                
+//                ALContact *contact = (ALContact *)[self.filteredContactList objectAtIndex:indexPath.row];
+//                newContactCell.contactPersonName.text = [contact getDisplayName];
                 
                 
                 if (contact)
@@ -543,6 +574,36 @@
         {
             ALContact *contact = [self.filteredContactList objectAtIndex:indexPath.row];
             [self.groupMembers addObject:contact.userId];
+            
+            NSMutableDictionary *newDict = [[NSMutableDictionary alloc] init];
+            if(![_selectedContactArray containsObject:contact.userId]) {
+                for(int contact1=0 ; contact1<=[contactsArray count] - 1 ; contact1++) {
+                    NSString *dispName =  [contactsArray[contact1] objectForKey:@"Name"];
+                    if ([dispName isEqualToString:contact.displayName]) {
+                        //NSLog(@"hi");
+                        NSString *UniqueCode = [contactsArray[contact1] objectForKey:@"UniqueCode"];
+                        NSString *CategoryName = [contactsArray[contact1] objectForKey:@"CategoryName"];
+                        NSString *CategoryID = [contactsArray[contact1] objectForKey:@"CategoryID"];
+                        NSString *name = [contactsArray[contact1] objectForKey:@"Name"];
+                        NSString *criteria = [contactsArray[contact1] objectForKey:@"Criteria"];
+                        newDict[@"toUserUniqueId"] = UniqueCode;
+                        newDict[@"category"] = CategoryName;
+                        newDict[@"categoryId"] = CategoryID;
+                        newDict[@"camStatus"] = @"Yes";
+                        newDict[@"criteria"] = criteria;
+                        newDict[@"name"] = name;
+                        newDict[@"speakerStatus"] = @"Yes";
+                        [_selectedContactArray addObject:newDict];
+                    }
+                }
+                
+                
+                
+                
+            }
+            
+            
+            
         }break;
         case BROADCAST_GROUP_CREATION:
         {
@@ -1143,6 +1204,10 @@
                                                                      ALSubViewController * msgSubView = (ALSubViewController *)aViewController;
                                                                      [msgSubView.msgView insertChannelMessage:alChannel.key];
                                                                      [self.navigationController popToViewController:aViewController animated:YES];
+                                                                 } else if ([aViewController isKindOfClass:[ALGroupCreationViewController class]]) {
+                                                                     [aViewController dismissViewControllerAnimated:YES completion:^{
+                                                                         [self.navigationController popViewControllerAnimated:YES];
+                                                                     }];
                                                                  }
                                                              }
                                                          }
@@ -1165,6 +1230,40 @@
                 andMetaData:nil withCompletion:^(ALChannel *alChannel, NSError *error) {
                                  if(alChannel)
                                  {
+                                     
+                                     NSLog(@"entity id as string:\n%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"entityid"]);
+                                     NSError *error1;
+                                     NSString *jsonString;
+                                     if([self->_selectedContactArray count]!=0){
+                                         NSData *jsonData2 = [NSJSONSerialization dataWithJSONObject:self->_selectedContactArray options:0 error:&error1];
+                                         jsonString = [[NSString alloc] initWithData:jsonData2 encoding:NSUTF8StringEncoding];
+                                         NSLog(@"jsonData as string:\n%@", jsonString);
+                                     } else {
+                                         NSArray *dictContact;
+                                         dictContact = @[@{
+                                                             @"CategoryID" : @"1",
+                                                             @"CategoryName" : @"Obsequium",
+                                                             @"Criteria" : @"Group",
+                                                             @"ID" : @"1",
+                                                             @"Name" : @"Obsequium",
+                                                             @"UniqueCode" : @"Obsequium"
+                                                             }];
+                                         NSData *jsonData2 = [NSJSONSerialization dataWithJSONObject:dictContact options:0 error:&error1];
+                                         jsonString = [[NSString alloc] initWithData:jsonData2 encoding:NSUTF8StringEncoding];
+                                     }
+                                     NSString *entityId=[[NSUserDefaults standardUserDefaults] objectForKey:@"entityid"];
+                                     NSString *grupIdInString = [alChannel.key stringValue];
+                                     NSString *devId=[[NSUserDefaults standardUserDefaults] objectForKey:@"deviceid"];
+                                     NSLog(@"EntityId:\n%@", entityId);
+                                     [ALObseObject addGroup:[[NSUserDefaults standardUserDefaults] objectForKey:@"uname"] groupName:self.groupName groupId:@"0" entityID:entityId appLozicGroupID:grupIdInString Members:jsonString deviceId:devId success:^(ALObseObject *oneObj) {
+                                         NSLog(@"SuccessforaddingGroup");
+                                     } failure:^(NSString *error) {
+                                         NSLog(@"fail");
+                                     }];
+                                     
+                                     
+                                     
+                                     
                                      //Updating view, popping to MessageList View
                                      NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
                                      

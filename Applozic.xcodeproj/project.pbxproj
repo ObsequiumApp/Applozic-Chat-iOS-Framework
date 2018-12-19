@@ -377,6 +377,11 @@
 		8B7864231FE2329F004B9E64 /* MessageReplyView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B7864211FE2329E004B9E64 /* MessageReplyView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BE0F6F32063D57E00361DD9 /* SoundRecordingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE0F6F22063D57E00361DD9 /* SoundRecordingView.swift */; };
 		92C06B35FB245189A6C16B18 /* libPods-Applozic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61F85D44BCB97CB78AA5B43A /* libPods-Applozic.a */; };
+		A962A4D621CA1B6100F6A640 /* Views in Resources */ = {isa = PBXBuildFile; fileRef = A962A4D121CA1B5F00F6A640 /* Views */; };
+		A962A4D721CA1B6100F6A640 /* ALObseCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = A962A4D221CA1B5F00F6A640 /* ALObseCommon.m */; };
+		A962A4D821CA1B6100F6A640 /* ALObseCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = A962A4D321CA1B6000F6A640 /* ALObseCommon.h */; };
+		A962A4D921CA1B6100F6A640 /* ALObseObject.h in Headers */ = {isa = PBXBuildFile; fileRef = A962A4D421CA1B6000F6A640 /* ALObseObject.h */; };
+		A962A4DA21CA1B6100F6A640 /* ALObseObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A962A4D521CA1B6000F6A640 /* ALObseObject.m */; };
 		C70273CB1DED445E00BA2C8A /* ALUserDetailListFeed.h in Headers */ = {isa = PBXBuildFile; fileRef = C70273C91DED445E00BA2C8A /* ALUserDetailListFeed.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C70273CC1DED445E00BA2C8A /* ALUserDetailListFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = C70273CA1DED445E00BA2C8A /* ALUserDetailListFeed.m */; };
 		C70983071E0177E900FC93A1 /* ALMessageServiceWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = C70983051E0177E900FC93A1 /* ALMessageServiceWrapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -775,6 +780,11 @@
 		8B7864201FE2329E004B9E64 /* MessageReplyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MessageReplyView.m; path = Applozic/MessageReplyView.m; sourceTree = "<group>"; };
 		8B7864211FE2329E004B9E64 /* MessageReplyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessageReplyView.h; path = Applozic/MessageReplyView.h; sourceTree = "<group>"; };
 		8BE0F6F22063D57E00361DD9 /* SoundRecordingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SoundRecordingView.swift; path = Applozic/SoundRecordingView.swift; sourceTree = "<group>"; };
+		A962A4D121CA1B5F00F6A640 /* Views */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Views; path = Applozic/Views; sourceTree = SOURCE_ROOT; };
+		A962A4D221CA1B5F00F6A640 /* ALObseCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ALObseCommon.m; path = Applozic/ALObseCommon.m; sourceTree = SOURCE_ROOT; };
+		A962A4D321CA1B6000F6A640 /* ALObseCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ALObseCommon.h; path = Applozic/ALObseCommon.h; sourceTree = SOURCE_ROOT; };
+		A962A4D421CA1B6000F6A640 /* ALObseObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ALObseObject.h; path = Applozic/ALObseObject.h; sourceTree = SOURCE_ROOT; };
+		A962A4D521CA1B6000F6A640 /* ALObseObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ALObseObject.m; path = Applozic/ALObseObject.m; sourceTree = SOURCE_ROOT; };
 		C70273C91DED445E00BA2C8A /* ALUserDetailListFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ALUserDetailListFeed.h; path = Applozic/ALUserDetailListFeed.h; sourceTree = "<group>"; };
 		C70273CA1DED445E00BA2C8A /* ALUserDetailListFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ALUserDetailListFeed.m; path = Applozic/ALUserDetailListFeed.m; sourceTree = "<group>"; };
 		C70983051E0177E900FC93A1 /* ALMessageServiceWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ALMessageServiceWrapper.h; path = Applozic/ALMessageServiceWrapper.h; sourceTree = "<group>"; };
@@ -1377,6 +1387,11 @@
 		6D73B2F91D4F0F02007D3D72 /* LoggedInUserProfile */ = {
 			isa = PBXGroup;
 			children = (
+				A962A4D321CA1B6000F6A640 /* ALObseCommon.h */,
+				A962A4D221CA1B5F00F6A640 /* ALObseCommon.m */,
+				A962A4D421CA1B6000F6A640 /* ALObseObject.h */,
+				A962A4D521CA1B6000F6A640 /* ALObseObject.m */,
+				A962A4D121CA1B5F00F6A640 /* Views */,
 				6DEAEE8A1D4CDBC700360060 /* ALUserProfileVC.h */,
 				6DEAEE8B1D4CDBC700360060 /* ALUserProfileVC.m */,
 			);
@@ -1716,9 +1731,11 @@
 				6D36F2081BFF3EE3003D46D3 /* ALApplozicSettings.h in Headers */,
 				6D9547691BE38DFF00776652 /* ALContactDBService.h in Headers */,
 				6D6DF1541BC5364C00EBA00F /* UIImage+Utility.h in Headers */,
+				A962A4D821CA1B6100F6A640 /* ALObseCommon.h in Headers */,
 				6D6DF1CF1BC5364C00EBA00F /* UIImageView+WebCache.h in Headers */,
 				6D6DF1B21BC5364C00EBA00F /* MKAnnotationView+WebCache.h in Headers */,
 				6D6DF1BC1BC5364C00EBA00F /* SDWebImageDownloader.h in Headers */,
+				A962A4D921CA1B6100F6A640 /* ALObseObject.h in Headers */,
 				6D6DF1B61BC5364C00EBA00F /* SDImageCache.h in Headers */,
 				6D6DF1C91BC5364C00EBA00F /* UIImage+MultiFormat.h in Headers */,
 				6D6DF1C51BC5364C00EBA00F /* UIButton+WebCache.h in Headers */,
@@ -1802,6 +1819,7 @@
 				1881CEC02152794E00325270 /* CustomPicker.storyboard in Resources */,
 				4612E8F31E13882D0022DB23 /* Doxyfile in Resources */,
 				6D7757161D5B83660025560B /* TSMessagesDefaultDesign.json in Resources */,
+				A962A4D621CA1B6100F6A640 /* Views in Resources */,
 				4612E9191E13882D0022DB23 /* MQTTWebsocketTransport in Resources */,
 				6D6DF1861BC5364C00EBA00F /* Images.xcassets in Resources */,
 				6D6DF16F1BC5364C00EBA00F /* Applozic.storyboard in Resources */,
@@ -1962,6 +1980,7 @@
 				293446141D4F426F007BD1B4 /* ALImageActivity.m in Sources */,
 				6D7756921D5B7FBE0025560B /* DB_ConversationProxy.m in Sources */,
 				463E49211DB7B45D00CDFFE6 /* ALVCardClass.m in Sources */,
+				A962A4DA21CA1B6100F6A640 /* ALObseObject.m in Sources */,
 				6D6DF1B71BC5364C00EBA00F /* SDImageCache.m in Sources */,
 				6D6DF1771BC5364C00EBA00F /* ALMessage.m in Sources */,
 				6D6DF1C41BC5364C00EBA00F /* SDWebImagePrefetcher.m in Sources */,
@@ -1983,6 +2002,7 @@
 				6D6DF1BB1BC5364C00EBA00F /* SDWebImageDecoder.m in Sources */,
 				29CBF2031C0303A700BE6A20 /* ALColorUtility.m in Sources */,
 				6D6DF1451BC5364C00EBA00F /* ALImagePickerHandler.m in Sources */,
+				A962A4D721CA1B6100F6A640 /* ALObseCommon.m in Sources */,
 				6D7756B21D5B80DF0025560B /* ALChannelFeed.m in Sources */,
 				6D6DF1CE1BC5364C00EBA00F /* UIImageView+HighlightedWebCache.m in Sources */,
 				6D3A4E061C76ED6C0067A4C8 /* ALAudioAttachmentViewController.m in Sources */,

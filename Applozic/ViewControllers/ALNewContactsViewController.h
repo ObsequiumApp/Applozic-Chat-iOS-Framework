@@ -53,6 +53,8 @@
 @property(nonatomic,strong) ALMessage *alMessage;
 @property (nonatomic, weak)id<ALForwardMessageDelegate>forwardDelegate;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewTopSegmentConstraint;
+@property (nonatomic,strong) NSMutableArray* selectedContactArray;
+@property (nonatomic,strong) NSMutableArray* tempArrayForFilter;
 
 - (IBAction)segmentControlAction:(id)sender;
 -(UIView *)setCustomBackButton:(NSString *)text;
@@ -60,7 +62,7 @@
 /********************
 LAUNCH FOR SUB GROUP
 *********************/
-
+@property (nonatomic) BOOL fromEmail;
 @property (nonatomic, strong) ALChannel * parentChannel;
 @property (nonatomic, strong) NSMutableArray * childChannels;
 
