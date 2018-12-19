@@ -57,6 +57,8 @@ static NSOperationQueue *updateGroupRequest;
 static NSOperationQueue *removeGroupRequestMember;
 static NSOperationQueue *deleteGroupRequest;
 
+    
+  //to get group members
 + (void)getGroupMembers:(NSString*)userName friendName:(NSString*)friendName catId:(NSString*)catId groupId:(NSString*)groupId meetingId:(NSString*)meetingId deviceId:(NSString*)deviceId success:(void (^)(ALObseObject *oneObj))success failure:(void (^)(NSString *error))failure
 {
     
